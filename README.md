@@ -12,23 +12,23 @@
 
 
 ## Multi-Task Management system (MTMs)
-MTMs is a PHP script for creating and manage processes on the operating system.
+MTMs is a PHP interface script, will help you to manage and create tasks and jobs on your Linux operation system and track them.
 
 
 ## Table of contents
-- [General info](#general-info)
+- [Summary](#summary)
 - [Technologies](#technologies)
 - [Features](#features )
 - [Installation](#installation)
-- [Upcoming features](upcoming-features)
-- [Usage](usage)
-- [Running MTMs with browser](running-MTMs-with-browser)
+- [Todo](#todo)
+- [Usage](#usage)
+- [Running MTMs with browser](#running-mtms-with-browser)
 - [License](#license)
 
 
-## General info
-MTMs is a PHP script for easier to create, show the result of that, and finish the process in the operating system (Linux), and the most important feature, you can create more than one task at the same time.
- 
+## Summary
+MTMs is a PHP script and library, to make it easier for you to create jobs and to track them on your Linux operation system, MTMs will provide you with full detailed results and logs, not only detailed but also easy to understand for the normal user.
+
 ## Technologies
 - ![](https://img.shields.io/badge/Apache-2.4.46-critical)
 - ![](https://img.shields.io/badge/php-7.4.3-blue)
@@ -37,14 +37,13 @@ MTMs is a PHP script for easier to create, show the result of that, and finish t
 
 ## Features
 - Multiple Task in the same time
-- Show all task
-- Create new Task
-- Show Task output
-- Finish Task
-- Check for similarity before start
+- Show all tasks
+- Create new Tasks
+- Show Tasks outputs
+- Finish Tasks
+- Checking for duplication
 
-
-## Upcoming features
+## Todo
 - [ ] Windows OS compatibility
 - [ ] Save to DB
 -  Want more? [Submit a feature request](https://github.com/MohammedAlawi/MTMs/issues/new)!
@@ -66,25 +65,14 @@ $init = $task->init();
 | Method             | Description                     | Example              |
 |--------------------|---------------------------------|----------------------|
 | run                | Start run command               | run('php long.php')  |
-| getRunningTask     | Get All Task                    | getRunningTask()     |
-| getTaskData        | Get task data by PID user given | getTaskData()        |
+| getRunningTask     | Get All Tasks                   | getRunningTask()     |
 | getTaskData        | Get task data by PID user given | getTaskData()        |
 | killRunningTask    | Finish task by PID user given   | killRunningTask(654) |
 | killRunningAllTask | Finish All running task         | killRunningAllTask() |
 
 
 ## Running MTMs with browser
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/1-dashboard.JPG)
-
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/2-add-task.JPG)
-
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/3-dashboard.JPG)
-
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/4-show-output-task.JPG)
-
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/5-stop-task.JPG)
-
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/6-dashboard.JPG)
+![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/try.gif)
 
 
 ## License
