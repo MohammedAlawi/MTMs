@@ -74,17 +74,17 @@ $init = $task->init();
 
 
 ## Running MTMs with browser
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/1-%20dashboard.JPG)
+![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/1-dashboard.JPG)
 
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/2-%20add-task.JPG)
+![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/2-add-task.JPG)
 
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/3-%20dashboard.JPG)
+![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/3-dashboard.JPG)
 
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/4-%20show-output-task.JPG)
+![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/4-show-output-task.JPG)
 
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/5-%20stop-task.JPG)
+![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/5-stop-task.JPG)
 
-![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/6-%20dashboard.JPG)
+![](https://raw.githubusercontent.com/MohammedAlawi/MTMs/main/static/6-dashboard.JPG)
 
 
 ## License
