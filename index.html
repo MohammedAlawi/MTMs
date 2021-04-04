@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Multi-Task Management system (MTMs)</title>
+
+        <link href="dist/css/bootstrap.min.css" rel="stylesheet">
+        
+        <script src="dist/js/jquery-3.6.0.min.js"></script>
+        <script src="dist/js/bootstrap.bundle.min.js"></script>
+        
+        <style>
+            .circleBadge {
+                display: inline-block;
+                width: 2rem;
+                height: 2rem;
+                vertical-align: text-bottom;
+                background-color: currentColor;
+                border-radius: 50%;
+            }
+
+            #taskResult {
+                background-color: black;
+                opacity: 0.7;
+                height: 500px;
+                color: #fff;
+                font-family: 'Source Code Pro', monospace;
+                font-weight: 200;
+                font-size: 14px;
+                white-space: pre-wrap;
+                white-space: -moz-pre-wrap;
+                white-space: -pre-wrap;
+                white-space: -o-pre-wrap;
+                word-wrap: break-word;
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+                overflow-y: auto;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16" style="display: none;">
+            <path id="search" d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+        </svg>
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-x" viewBox="0 0 16 16" style="display: none;">
+            <path id="close" d="M4.646 4.646a.5.5 0 0 1 .708 0L8 7.293l2.646-2.647a.5.5 0 0 1 .708.708L8.707 8l2.647 2.646a.5.5 0 0 1-.708.708L8 8.707l-2.646 2.647a.5.5 0 0 1-.708-.708L7.293 8 4.646 5.354a.5.5 0 0 1 0-.708z"/>
+        </svg>
+
+        <div class="container">
+
+            <p class="py-4 mt-4 display-4">
+                Multi-Task Management system (MTMs)
+            </p>
+
+            <div class="mt-5 ">
+                <div class="row row-cols-auto my-2">
+                    <div class="col">
+                        <a id="btn-check" class="btn btn-secondary" data-status="start">
+                            Stop Check
+                            <div class="spinner-grow text-warning" id="statusCir" style="width: 23px;height: 23px;"></div>
+                        </a>
+                    </div>
+    
+                    <div class="col">
+                        <a class="btn btn-primary" data-bs-toggle="modal" data-bs-target=".addNewTask">
+                            Add new Task
+                        </a>
+                    </div>
+                </div>
+                
+
+                <table id="mainTableTasks" class="table table-bordered" data-ajax="ajaxRequest"  >
+                    <thead>
+                        <tr class="table-secondary">
+                            <th scope="col">#</th>
+                            <th scope="col" style="width: 70%;">Task</th>
+                            <th scope="col">PID</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Tool</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <tr>
+                            <td id="loading" colspan="5">
+                                <div class="d-flex justify-content-center p-4">
+                                    <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>
+                                </div>
+                            </td>
+                        </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Start modal - add new task -->
+        <div class="modal fade addNewTask" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="addNewTaskLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-break" id="addNewTaskLabel">New Task</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="alertShow"></div>
+
+                        <div class="input-group">
+                            <span class="input-group-text">Command</span>
+                            <textarea class="form-control" id="cmd" aria-label="Command" style="height: 100px;"></textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a id="runCMD" class="btn btn-primary">Start</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- End modal - add new task -->
+        
+        <!-- Start modal - show task -->
+        <div class="modal fade showTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="showTaskLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 900px;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-break" id="showTaskLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+                        <div class="p-2 text-white" id="taskResult"></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- End modal - show task -->
+
+        <!-- Start modal - kill task -->
+        <div class="modal fade killTaskModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="killTaskLabel" style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title text-break" id="killTaskLabel"></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    
+                    <div class="modal-body">
+
+                        <div class="alertShow">3</div>
+                        <div class="p-2" id="killTaskBody"></div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <a id="killTaskBtn" class="btn btn-danger btn-ok">Stop</a>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <!-- End modal - kill task -->
+
+        <script>
+            var showTask_interval;
+
+            $.post('system.php', {type: 'getRunning'}, function(result){
+                var htmlTR = setDataToTable(result)
+                // if(htmlTR != '') 
+                    $('#mainTableTasks tbody').html(htmlTR);
+            }, 'json');
+
+            var runScan_interval = setInterval(function(){
+                $.post('system.php', {type: 'getRunning'}, function(result){
+                    var htmlTR = setDataToTable(result)
+                    // if(htmlTR != '')
+                        $('#mainTableTasks tbody').html(htmlTR);
+                }, 'json');
+            }, 3000);
+
+            
+
+            // start-stop check button
+            $('body').on('click', '#btn-check', function(e){
+                that = $(this);
+                
+                if(that.data('status') == 'start') {
+                    that.data('status', 'stop');
+                    
+                    that.html('Start Check <div class="circleBadge bg-danger" id="statusCir" style="width: 23px;height: 23px;"></div>')
+                    clearInterval(runScan_interval);
+                } else {
+                    runScan_interval = setInterval(function(){
+                        $.post('system.php', {type: 'getRunning'}, function(result){
+                            var htmlTR = setDataToTable(result)
+
+                            $('#mainTableTasks tbody').html(htmlTR);
+                        }, 'json');
+                    }, 3000);
+                    that.data('status', 'start');
+                    that.html('Stop Check <div class="spinner-grow text-warning" id="statusCir" style="width: 23px;height: 23px;"></div>')
+                }
+            });
+            
+            // Run Task
+            $('body').on('click', '#runCMD', function(event) {
+                event.preventDefault()
+                that = $(this);
+                var alertDiv = $('.addNewTask .alertShow');
+                var cmd = $('#cmd').val()
+                
+                alertDiv.html('');
+                
+                if(cmd == '') {
+                    alertDiv.html('<div class="alert alert-danger alert-dismissible fade show" role="alert">Must Enter Command to run it!</div>')
+                    alertDiv.fadeTo(2000, 500).slideUp(500, function() {
+                        alertDiv.slideUp(500);
+                    });
+                    return;
+                }
+                
+                $.post( 'system.php', {type: 'runCmd', cmd: $('#cmd').val()}, function(data) {
+                    
+                    if(data.status===true) {
+                        alertDiv.html('<div class="alert alert-success alert-dismissible fade show" role="alert">The operation was successfully started</div>')
+                        setTimeout(function(){ 
+                            $('.addNewTask').modal('hide')
+                        }, 3000);
+
+                    } else {
+                        alertDiv.html('<div class="alert alert-danger alert-dismissible fade show" role="alert">'+data.msg+'</div>')
+                    }
+                }, 'json')
+            })
+
+            // Show Task
+            $('body').on('click','a.showTask', function(){
+                var that  = $(this);
+                $('#taskResult').html('');
+                $('#showTaskLabel').html('');
+                
+                showTask_interval = setInterval(function(){
+                    $.post('system.php', {type: 'showTask', pid: that.data('pid')}, function(result){
+                        
+                        if(result.status===true) {
+                            $('#showTaskLabel').html("Task for: "+result.data.cmd);
+                            $('#taskResult').text(result.data.out);
+                            $('#taskResult')[0].scrollTop = $('#taskResult')[0].scrollHeight;
+                        }
+
+                        // if the task finished then stop the scan
+                        if(result.data.sts == 'fin') {
+                            clearInterval(showTask_interval);
+                        }
+
+                    }, 'json');
+                }, 800);
+
+            });
+
+            // on close - Show Task modal
+            $('body').on('hidden.bs.modal', '.showTaskModal', function () {
+                clearInterval(showTask_interval);
+            });
+            
+            // on close - add new task modal
+            $('body').on('hidden.bs.modal', '.addNewTask', function () {
+                $('.addNewTask .alertShow').html('');
+                $('#cmd').val('');
+            });
+
+            // on open Kill Task
+            $('body').on('click','a.killTask', function(){
+                var that  = $(this);
+                var alertDiv = $('.killTaskModal .alertShow');
+                alertDiv.html('');
+                $('#killTaskBody').html('');
+                
+                $.post('system.php', {type: 'showTask', pid: that.data('pid')}, function(result){
+                    
+                    if(result.status===true) {
+                        $('.killTaskModal').data('pid', result.data.pid)
+                        $('#killTaskLabel').html("Task : "+result.data.cmd);
+                        
+                        if(result.data.sts == 'fin') {
+                            
+                            alertDiv.html('<div class="alert alert-primary alert-dismissible fade show" role="alert">The task with PID '+result.data.pid+' was finish at '+result.data.end+'</div>')
+                        } else {
+                            $('#killTaskBody').html('Are you sure want stop the process? (<b>Cannot be resumed after being stopped</b>)');
+                        }
+                    }
+                }, 'json');
+                
+            });
+
+            // on confirm delete
+            $('body').on('click','a#killTaskBtn', function(){
+                var pid = $('.killTaskModal').data('pid');
+                var alertDiv = $('.killTaskModal .alertShow');
+                alertDiv.html('');
+                $.post('system.php', {type: 'killTask', pid: pid}, function(result){
+                    
+                    if(result.status === true) {
+                        alertDiv.html('<div class="alert alert-success alert-dismissible fade show" role="alert">Task with PID '+result.data.pid+' was successfully stopped</div>')
+                        setTimeout(function(){ 
+                            $('.killTaskModal').modal('hide')
+                        }, 3000);
+                    } else {
+                        alertDiv.html('<div class="alert alert-warning alert-dismissible fade show" role="alert">The task with PID '+result.data.pid+' was finish at '+result.data.end+'</div>')
+                    }
+                }, 'json');
+            });
+
+            
+
+            function setDataToTable(data){
+                var htmlTR = '';
+                if(data.length == 0) {
+                    htmlTR = '<td id="loading" colspan="5">\
+                            <div class="d-flex justify-content-center p-4">\
+                                <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status"></div>\
+                            </div>\
+                        </td>';
+                } else {
+                    $.each(data, function(i, item) {
+                        htmlTR += '\
+                            <tr>\
+                                <td>'+(i+1)+'</td>\
+                                <td>'+data[i].cmd+'</td>\
+                                <td>'+data[i].pid+'</td>\
+                                <td>'+(data[i].sts == 'run' ? '<div class="spinner-grow text-success" role="status"></div>' : '<div class="circleBadge bg-danger"></div>' )+'</td>\
+                                <td>\
+                                    <a class="showTask" href="" data-bs-toggle="modal" data-bs-target=".showTaskModal" data-pid="'+data[i].pid+'"><svg fill="currentColor" class="" width="24" height="24" viewBox="0 0 16 16"><use xlink:href="#search"/></svg></a>\
+                                    <a class="killTask text-danger" href="" data-bs-toggle="modal" data-bs-target=".killTaskModal" data-pid="'+data[i].pid+'"><svg fill="currentColor" class="" width="24" height="24" viewBox="0 0 16 16"><use xlink:href="#close"/></svg></a>\
+                                    <i class="bi bi-x"></i>\
+                                </td>\
+                            </tr>\
+                        ';
+                    });
+                }
+                
+                return htmlTR;
+            }
+
+        </script>
+        
+
+    </body>
+</html>
+
